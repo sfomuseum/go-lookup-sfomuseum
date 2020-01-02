@@ -31,6 +31,7 @@ func (l *GitLookerUpper) Append(ctx context.Context, lu lookup.Catalog, append_f
 
 	r, err := gogit.Clone(memory.NewStorage(), nil, &gogit.CloneOptions{
 		URL: l.uri,
+		Depth: 1,
 	})
 
 	if err != nil {

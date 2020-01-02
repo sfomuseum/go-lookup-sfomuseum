@@ -31,6 +31,8 @@ github.com/sfomuseum/go-lookup-git v0.0.0-20200102203431-0c3007493053 h1:U75xczd
 github.com/sfomuseum/go-lookup-git v0.0.0-20200102203431-0c3007493053/go.mod h1:UHUpMd4vZZuI77eForJk3O3aRf2ztLqLqk8Y8WlsS4U=
 github.com/sfomuseum/go-lookup-git v0.0.0-20200102205038-aa3527ada2e5 h1:X9CiXAgYVMl9tuO6C1zuRXkSoPqbZhvEmNMRNzYUnz8=
 github.com/sfomuseum/go-lookup-git v0.0.0-20200102205038-aa3527ada2e5/go.mod h1:UHUpMd4vZZuI77eForJk3O3aRf2ztLqLqk8Y8WlsS4U=
+github.com/sfomuseum/go-lookup-git v0.0.0-20200102215330-3ab4f382a42d h1:YoD3HqK2uwyOd0Ih/JbmWZh6+Ds4ifvScxskAwDedTM=
+github.com/sfomuseum/go-lookup-git v0.0.0-20200102215330-3ab4f382a42d/go.mod h1:UHUpMd4vZZuI77eForJk3O3aRf2ztLqLqk8Y8WlsS4U=
 github.com/src-d/gcfg v1.4.0 h1:xXbNR5AlLSA315x2UO+fTSSAXCDf+Ar38/6oyGbDKQ4=
 github.com/src-d/gcfg v1.4.0/go.mod h1:p/UMsR43ujA89BJY9duynAwIpvqEujIH/jFlfL7jWoI=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
