@@ -4,30 +4,21 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/sfomuseum/go-lookup"	
 	"github.com/sfomuseum/go-lookup-sfomuseum"
-	_ "gocloud.dev/blob/fileblob"	
+	_ "gocloud.dev/blob/fileblob"
 	"log"
 )
 
 func main() {
 
-	source := flag.String("source", "", "")
+	source := flag.String("source", "git://", "")
 
 	flag.Parse()
-	
+
 	ctx := context.Background()
 
-	var c lookup.Catalog
-	var err error
-	
-	switch *source {
-	case "":
-		c, err = sfomuseum.NewGatesLookupFromGit(ctx)
-	default:
-		c, err = sfomuseum.NewGatesLookupFromBlob(ctx, *source)	
-	}
-	
+	c, err := sfomuseum.NewGatesCatalog(ctx, *source)
+
 	if err != nil {
 		log.Fatal(err)
 	}

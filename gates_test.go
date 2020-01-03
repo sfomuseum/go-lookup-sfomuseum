@@ -16,7 +16,7 @@ func TestGatesGitLookup(t *testing.T) {
 
 	ctx := context.Background()
 
-	c, err := NewGatesLookup(ctx)
+	c, err := NewGatesCatalogFromGit(ctx)
 
 	if err != nil {
 		t.Fatal(err)
