@@ -8,10 +8,41 @@ import (
 	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
-	_ "log"
+	"net/url"
+	"log"
 )
 
-const SFOMUSEUM_DATA_AIRLINES string = "https://github.com/sfomuseum-data/sfomuseum-data-airlines.git"
+// airlines://git?uri=
+// airlines://blob?uri=
+
+const SFOMUSEUM_DATA_AIRLINES string = "https://github.com/sfomuseum-data/sfomuseum-data-enterprise.git"
+
+func DefaultAirlinesGitURI() string {
+	return NewAirlinesGitURI(SFOMUSEUM_DATA_AIRLINES)
+}
+
+func NewAirlinesGitURI(uri string) string {	
+	return NewAirlinesURI("git", uri)
+}
+
+func NewAirlinesBlobURI(uri string) string {
+	return NewAirlinesURI("blob", uri)
+}
+
+func NewAirlinesURI(lu_scheme string, uri string) string {
+	
+	u := url.URL{}
+	u.Scheme = "airlines"
+	u.Host = lu_scheme
+
+	p := url.Values{}
+	p.Set("uri", uri)
+
+	log.Println("URI", uri)
+	
+	u.RawQuery = p.Encode()
+	return u.String()
+}
 
 func DefaultAirlinesCatalogOptions() (*CatalogOptions, error) {
 
@@ -22,7 +53,6 @@ func DefaultAirlinesCatalogOptions() (*CatalogOptions, error) {
 	}
 
 	opts.AppendFuncs = append(opts.AppendFuncs, AppendAirlineFunc)
-
 	return opts, nil
 }
 
@@ -86,7 +116,7 @@ func AppendAirlineFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser)
 
 	for _, c := range codes {
 
-		// fmt.Printf("APPEND '%s' : '%d' is current: %d\n", gt, id, c_rsp.Int())
+		fmt.Printf("APPEND '%s' : '%d'\n", c, id)
 
 		has_id, exists := lu.LoadOrStore(c, id)
 

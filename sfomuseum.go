@@ -2,10 +2,14 @@ package sfomuseum
 
 import (
 	"context"
+	"errors"
 	"encoding/json"
 	"github.com/sfomuseum/go-lookup"
 	"github.com/sfomuseum/go-lookup/catalog"
+	"github.com/sfomuseum/go-lookup-blob"
+	"github.com/sfomuseum/go-lookup-git"	
 	"github.com/tidwall/pretty"
+	"net/url"
 )
 
 type CatalogOptions struct {
@@ -43,6 +47,54 @@ func NewCatalogWithOptions(ctx context.Context, opts *CatalogOptions) (lookup.Ca
 	}
 
 	return opts.Catalog, nil
+}
+
+func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
+
+	u, err := url.Parse(uri)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var opts *CatalogOptions
+	var opts_err error
+	
+	switch u.Scheme {
+	case "airlines":
+		opts, opts_err = DefaultAirlinesCatalogOptions()	
+	case "gates":
+		opts, opts_err = DefaultGatesCatalogOptions()		
+	default:
+		return nil, errors.New("Unsupported lookup")
+	}
+		
+	if opts_err != nil {
+		return nil, opts_err
+	}
+
+	var lu lookup.LookerUpper
+	
+	switch u.Host {
+	case "blob":
+		lu = blob.NewBlobLookerUpper(ctx)
+	case "git":
+		lu = git.NewGitLookerUpper(ctx)
+	default:
+		return  nil, errors.New("Unsupported looker upper")
+	}
+
+	q := u.Query()
+	lu_uri := q.Get("uri")
+
+	err = lu.Open(ctx, lu_uri)
+
+	if err != nil {
+		return nil, err
+	}
+
+	opts.LookerUppers = append(opts.LookerUppers, lu)
+	return NewCatalogWithOptions(ctx, opts)	
 }
 
 func MarshalCatalog(c lookup.Catalog) ([]byte, error) {
