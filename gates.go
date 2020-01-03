@@ -7,7 +7,6 @@ import (
 	"github.com/sfomuseum/go-lookup"
 	"github.com/sfomuseum/go-lookup-blob"
 	"github.com/sfomuseum/go-lookup-git"
-	"github.com/sfomuseum/go-lookup/catalog"
 	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
@@ -17,31 +16,15 @@ import (
 
 const SFOMUSEUM_DATA_ARCHITECTURE string = "https://github.com/sfomuseum-data/sfomuseum-data-architecture.git"
 
-type GatesCatalogOptions struct {
-	Catalog      lookup.Catalog
-	AppendFuncs  []lookup.AppendLookupFunc
-	LookerUppers []lookup.LookerUpper
-}
+func DefaultGatesCatalogOptions() (*CatalogOptions, error) {
 
-func DefaultGatesCatalogOptions() (*GatesCatalogOptions, error) {
-
-	c, err := catalog.NewSyncMapCatalog()
+	opts, err := DefaultCatalogOptions()
 
 	if err != nil {
 		return nil, err
 	}
 
-	funcs := []lookup.AppendLookupFunc{
-		AppendGateFunc,
-	}
-
-	lookers := make([]lookup.LookerUpper, 0)
-
-	opts := &GatesCatalogOptions{
-		Catalog:      c,
-		AppendFuncs:  funcs,
-		LookerUppers: lookers,
-	}
+	opts.AppendFuncs = append(opts.AppendFuncs, AppendGateFunc)
 
 	return opts, nil
 }
@@ -108,7 +91,7 @@ func NewGatesCatalogFromGit(ctx context.Context) (lookup.Catalog, error) {
 
 	opts.LookerUppers = append(opts.LookerUppers, lu)
 
-	return NewGatesCatalogWithOptions(ctx, opts)
+	return NewCatalogWithOptions(ctx, opts)
 }
 
 func NewGatesCatalogFromBlob(ctx context.Context, uri string) (lookup.Catalog, error) {
@@ -127,18 +110,7 @@ func NewGatesCatalogFromBlob(ctx context.Context, uri string) (lookup.Catalog, e
 
 	opts.LookerUppers = append(opts.LookerUppers, lu)
 
-	return NewGatesCatalogWithOptions(ctx, opts)
-}
-
-func NewGatesCatalogWithOptions(ctx context.Context, opts *GatesCatalogOptions) (lookup.Catalog, error) {
-
-	err := lookup.SeedCatalog(ctx, opts.Catalog, opts.LookerUppers, opts.AppendFuncs)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return opts.Catalog, nil
+	return NewCatalogWithOptions(ctx, opts)
 }
 
 func AppendGateFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser) error {
