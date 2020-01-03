@@ -119,12 +119,11 @@ func NewCatalogWithOptions(ctx context.Context, opts *CatalogOptions) (lookup.Ca
 
 func MarshalCatalog(c lookup.Catalog) ([]byte, error) {
 
-	lookup := make(map[string]int64)
+	lookup := make(map[string]interface{})
 
 	c.Range(func(key interface{}, value interface{}) bool {
 		gate_name := key.(string)
-		wof_id := value.(int64)
-		lookup[gate_name] = wof_id
+		lookup[gate_name] = value
 		return true
 	})
 

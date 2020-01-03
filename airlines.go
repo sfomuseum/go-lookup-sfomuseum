@@ -41,6 +41,7 @@ func DefaultAirlinesCatalogOptions() (*CatalogOptions, error) {
 	}
 
 	opts.AppendFuncs = append(opts.AppendFuncs, AppendAirlineFunc)
+	opts.AppendFuncs = append(opts.AppendFuncs, AppendAirlineCodesFunc)	
 	return opts, nil
 }
 
@@ -112,6 +113,67 @@ func AppendAirlineFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser)
 			msg := fmt.Sprintf("Existing airline for '%s' (%d). Has ID: %d", c, id, has_id.(int64))
 			return errors.New(msg)
 		}
+	}
+
+	return nil
+}
+
+func AppendAirlineCodesFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser) error {
+
+	body, err := ioutil.ReadAll(fh)
+
+	if err != nil {
+		return err
+	}
+
+	id_rsp := gjson.GetBytes(body, "properties.wof:id")
+
+	if !id_rsp.Exists() {
+		return nil
+	}
+
+	pt_rsp := gjson.GetBytes(body, "properties.sfomuseum:placetype")
+
+	if !pt_rsp.Exists() {
+		return nil
+	}
+
+	if pt_rsp.String() != "airline" {
+		return nil
+	}
+
+	c_rsp := gjson.GetBytes(body, "properties.mz:is_current")
+
+	if !c_rsp.Exists() {
+		return nil
+	}
+
+	if c_rsp.Int() != 1 {
+		return nil
+	}
+
+	iata_rsp := gjson.GetBytes(body, "properties.wof:concordances.iata:code")
+
+	if !iata_rsp.Exists(){
+		return nil
+	}
+	
+	icao_rsp := gjson.GetBytes(body, "properties.wof:concordances.icao:code")	
+
+	if !icao_rsp.Exists(){
+		return nil
+	}
+
+	iata_code := iata_rsp.String()	// AC
+	icao_code := icao_rsp.String()	// ACA
+
+	iata_key := fmt.Sprintf("iata:%s", iata_code)
+
+	has_code, exists := lu.LoadOrStore(iata_key, icao_code)
+
+	if exists && icao_code != has_code.(string) {
+		msg := fmt.Sprintf("Existing airline for '%s' (%s). Has code: %s'", iata_code, icao_code, has_code)
+		return errors.New(msg)
 	}
 
 	return nil
