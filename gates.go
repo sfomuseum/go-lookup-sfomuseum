@@ -5,8 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sfomuseum/go-lookup"
-	"github.com/sfomuseum/go-lookup-blob"
-	"github.com/sfomuseum/go-lookup-git"
 	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
@@ -15,6 +13,31 @@ import (
 )
 
 const SFOMUSEUM_DATA_ARCHITECTURE string = "https://github.com/sfomuseum-data/sfomuseum-data-architecture.git"
+
+func DefaultGatesGitURI() string {
+	return NewGatesGitURI(SFOMUSEUM_DATA_ARCHITECTURE)
+}
+
+func NewGatesGitURI(uri string) string {
+	return NewGatesURI("git", uri)
+}
+
+func NewGatesBlobURI(uri string) string {
+	return NewGatesURI("blob", uri)
+}
+
+func NewGatesURI(lu_scheme string, uri string) string {
+
+	u := url.URL{}
+	u.Scheme = "gates"
+	u.Host = lu_scheme
+
+	p := url.Values{}
+	p.Set("uri", uri)
+
+	u.RawQuery = p.Encode()
+	return u.String()
+}
 
 func DefaultGatesCatalogOptions() (*CatalogOptions, error) {
 
@@ -27,90 +50,6 @@ func DefaultGatesCatalogOptions() (*CatalogOptions, error) {
 	opts.AppendFuncs = append(opts.AppendFuncs, AppendGateFunc)
 
 	return opts, nil
-}
-
-func NewGatesCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
-
-	u, err := url.Parse(uri)
-
-	if err != nil {
-		return nil, err
-	}
-
-	switch u.Scheme {
-	case "git":
-		return NewGatesCatalogFromGit(ctx)
-	case "file", "s3":
-		return NewGatesCatalogFromBlob(ctx, uri)
-	default:
-		// pass
-	}
-
-	return nil, errors.New("Unknown gates looker upper scheme")
-}
-
-func NewGatesGitLookerUpper(ctx context.Context) (lookup.LookerUpper, error) {
-
-	lu := git.NewGitLookerUpper(ctx)
-
-	err := lu.Open(ctx, SFOMUSEUM_DATA_ARCHITECTURE)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return lu, nil
-}
-
-func NewGatesBlobLookerUpper(ctx context.Context, uri string) (lookup.LookerUpper, error) {
-
-	lu := blob.NewBlobLookerUpper(ctx)
-
-	err := lu.Open(ctx, uri)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return lu, nil
-}
-
-func NewGatesCatalogFromGit(ctx context.Context) (lookup.Catalog, error) {
-
-	opts, err := DefaultGatesCatalogOptions()
-
-	if err != nil {
-		return nil, err
-	}
-
-	lu, err := NewGatesGitLookerUpper(ctx)
-
-	if err != nil {
-		return nil, err
-	}
-
-	opts.LookerUppers = append(opts.LookerUppers, lu)
-
-	return NewCatalogWithOptions(ctx, opts)
-}
-
-func NewGatesCatalogFromBlob(ctx context.Context, uri string) (lookup.Catalog, error) {
-
-	opts, err := DefaultGatesCatalogOptions()
-
-	if err != nil {
-		return nil, err
-	}
-
-	lu, err := NewGatesBlobLookerUpper(ctx, uri)
-
-	if err != nil {
-		return nil, err
-	}
-
-	opts.LookerUppers = append(opts.LookerUppers, lu)
-
-	return NewCatalogWithOptions(ctx, opts)
 }
 
 func AppendGateFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser) error {

@@ -8,20 +8,20 @@ import (
 	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
+	_ "log"
 	"net/url"
-	"log"
 )
 
 // airlines://git?uri=
 // airlines://blob?uri=
 
-const SFOMUSEUM_DATA_AIRLINES string = "https://github.com/sfomuseum-data/sfomuseum-data-enterprise.git"
+const SFOMUSEUM_DATA_ENTERPRISE string = "https://github.com/sfomuseum-data/sfomuseum-data-enterprise.git"
 
 func DefaultAirlinesGitURI() string {
-	return NewAirlinesGitURI(SFOMUSEUM_DATA_AIRLINES)
+	return NewAirlinesGitURI(SFOMUSEUM_DATA_ENTERPRISE)
 }
 
-func NewAirlinesGitURI(uri string) string {	
+func NewAirlinesGitURI(uri string) string {
 	return NewAirlinesURI("git", uri)
 }
 
@@ -30,7 +30,7 @@ func NewAirlinesBlobURI(uri string) string {
 }
 
 func NewAirlinesURI(lu_scheme string, uri string) string {
-	
+
 	u := url.URL{}
 	u.Scheme = "airlines"
 	u.Host = lu_scheme
@@ -38,8 +38,6 @@ func NewAirlinesURI(lu_scheme string, uri string) string {
 	p := url.Values{}
 	p.Set("uri", uri)
 
-	log.Println("URI", uri)
-	
 	u.RawQuery = p.Encode()
 	return u.String()
 }

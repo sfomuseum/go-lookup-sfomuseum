@@ -11,13 +11,14 @@ import (
 
 func main() {
 
-	source := flag.String("source", "git://", "")
+	default_source := sfomuseum.DefaultGatesGitURI()
+	source := flag.String("source", default_source, "")
 
 	flag.Parse()
 
 	ctx := context.Background()
 
-	c, err := sfomuseum.NewGatesCatalog(ctx, *source)
+	c, err := sfomuseum.NewCatalog(ctx, *source)
 
 	if err != nil {
 		log.Fatal(err)
