@@ -11,6 +11,7 @@ import (
 	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
+	_ "log"
 	"net/url"
 )
 
@@ -30,7 +31,10 @@ func DefaultGatesCatalogOptions() (*GatesCatalogOptions, error) {
 		return nil, err
 	}
 
-	funcs := make([]lookup.AppendLookupFunc, 0)
+	funcs := []lookup.AppendLookupFunc{
+		AppendGateFunc,
+	}
+
 	lookers := make([]lookup.LookerUpper, 0)
 
 	opts := &GatesCatalogOptions{
