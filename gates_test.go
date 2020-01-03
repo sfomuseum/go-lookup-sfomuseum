@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestGatesLookup(t *testing.T) {
+func TestGatesGitLookup(t *testing.T) {
 
 	tests := map[string]int64{
 		"E12":  int64(1477930403),

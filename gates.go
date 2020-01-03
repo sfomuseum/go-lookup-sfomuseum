@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sfomuseum/go-lookup"
+	"github.com/sfomuseum/go-lookup-blob"
 	"github.com/sfomuseum/go-lookup-git"
 	"github.com/sfomuseum/go-lookup/catalog"
 	"github.com/tidwall/gjson"
@@ -14,24 +15,60 @@ import (
 
 const SFOMUSEUM_DATA_ARCHITECTURE string = "https://github.com/sfomuseum-data/sfomuseum-data-architecture.git"
 
-func NewGatesLookup(ctx context.Context) (lookup.Catalog, error) {
+func NewGatesGitLookerUpper(ctx context.Context) (lookup.LookerUpper, error) {
+
+	lu := git.NewGitLookerUpper(ctx)
+
+	err := lu.Open(ctx, SFOMUSEUM_DATA_ARCHITECTURE)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return lu, nil
+}
+
+func NewGatesBlobLookerUpper(ctx context.Context, uri string) (lookup.LookerUpper, error) {
+
+	lu := blob.NewBlobLookerUpper(ctx)
+
+	err := lu.Open(ctx, uri)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return lu, nil
+}
+
+func NewGatesLookupFromGit(ctx context.Context) (lookup.Catalog, error) {
+
+	lu, err := NewGatesGitLookerUpper(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return NewGatesLookup(ctx, lu)
+}
+
+func NewGatesLookupFromBlob(ctx context.Context, uri string) (lookup.Catalog, error) {
+
+	lu, err := NewGatesBlobLookerUpper(ctx, uri)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return NewGatesLookup(ctx, lu)
+}
+
+func NewGatesLookup(ctx context.Context, looker_uppers ...lookup.LookerUpper) (lookup.Catalog, error) {
 
 	c, err := catalog.NewSyncMapCatalog()
 
 	if err != nil {
 		return nil, err
-	}
-
-	lu := git.NewGitLookerUpper(ctx)
-
-	err = lu.Open(ctx, SFOMUSEUM_DATA_ARCHITECTURE)
-
-	if err != nil {
-		return nil, err
-	}
-
-	looker_uppers := []lookup.LookerUpper{
-		lu,
 	}
 
 	append_funcs := []lookup.AppendLookupFunc{
