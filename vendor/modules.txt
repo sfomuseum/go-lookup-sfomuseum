@@ -28,7 +28,7 @@ github.com/sfomuseum/go-lookup
 github.com/sfomuseum/go-lookup/catalog
 # github.com/sfomuseum/go-lookup-blob v0.0.0-20200103003659-4731c02c6ace
 github.com/sfomuseum/go-lookup-blob
-# github.com/sfomuseum/go-lookup-git v0.0.0-20200102215330-3ab4f382a42d
+# github.com/sfomuseum/go-lookup-git v0.0.0-20200103014915-6d8a6611f498
 github.com/sfomuseum/go-lookup-git
 # github.com/src-d/gcfg v1.4.0
 github.com/src-d/gcfg
