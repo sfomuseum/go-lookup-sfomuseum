@@ -1,6 +1,10 @@
 package sfomuseum
 
 import (
+	_ "gocloud.dev/blob/fileblob"
+)
+
+import (
 	"context"
 	"encoding/json"
 	"errors"
@@ -38,15 +42,18 @@ func DefaultCatalogOptions() (*CatalogOptions, error) {
 	return opts, nil
 }
 
-func NewCatalogWithOptions(ctx context.Context, opts *CatalogOptions) (lookup.Catalog, error) {
+func NewLookupURI(scheme string, lu_scheme string, uri string) string {
 
-	err := lookup.SeedCatalog(ctx, opts.Catalog, opts.LookerUppers, opts.AppendFuncs)
+	u := url.URL{}
+	u.Scheme = scheme
+	u.Host = lu_scheme
 
-	if err != nil {
-		return nil, err
-	}
+	p := url.Values{}
+	p.Set("uri", uri)
 
-	return opts.Catalog, nil
+	u.RawQuery = p.Encode()
+	return u.String()
+
 }
 
 func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
@@ -63,6 +70,8 @@ func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
 	switch u.Scheme {
 	case "airlines":
 		opts, opts_err = DefaultAirlinesCatalogOptions()
+	case "airports":
+		opts, opts_err = DefaultAirportsCatalogOptions()
 	case "gates":
 		opts, opts_err = DefaultGatesCatalogOptions()
 	default:
@@ -95,6 +104,17 @@ func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
 
 	opts.LookerUppers = append(opts.LookerUppers, lu)
 	return NewCatalogWithOptions(ctx, opts)
+}
+
+func NewCatalogWithOptions(ctx context.Context, opts *CatalogOptions) (lookup.Catalog, error) {
+
+	err := lookup.SeedCatalog(ctx, opts.Catalog, opts.LookerUppers, opts.AppendFuncs)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return opts.Catalog, nil
 }
 
 func MarshalCatalog(c lookup.Catalog) ([]byte, error) {

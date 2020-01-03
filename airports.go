@@ -13,6 +13,22 @@ import (
 
 const SFOMUSEUM_DATA_WHOSONFIRST string = "https://github.com/sfomuseum-data/sfomuseum-data-whosonfirst.git"
 
+func DefaultAirportsGitURI() string {
+	return NewAirportsGitURI(SFOMUSEUM_DATA_WHOSONFIRST)
+}
+
+func NewAirportsGitURI(uri string) string {
+	return NewAirportsURI("git", uri)
+}
+
+func NewAirportsBlobURI(uri string) string {
+	return NewAirportsURI("blob", uri)
+}
+
+func NewAirportsURI(lu_scheme string, uri string) string {
+	return NewLookupURI("airports", lu_scheme, uri)
+}
+
 func DefaultAirportsCatalogOptions() (*CatalogOptions, error) {
 
 	opts, err := DefaultCatalogOptions()

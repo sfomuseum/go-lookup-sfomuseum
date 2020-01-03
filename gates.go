@@ -9,7 +9,6 @@ import (
 	"io"
 	"io/ioutil"
 	_ "log"
-	"net/url"
 )
 
 const SFOMUSEUM_DATA_ARCHITECTURE string = "https://github.com/sfomuseum-data/sfomuseum-data-architecture.git"
@@ -27,16 +26,7 @@ func NewGatesBlobURI(uri string) string {
 }
 
 func NewGatesURI(lu_scheme string, uri string) string {
-
-	u := url.URL{}
-	u.Scheme = "gates"
-	u.Host = lu_scheme
-
-	p := url.Values{}
-	p.Set("uri", uri)
-
-	u.RawQuery = p.Encode()
-	return u.String()
+	return NewLookupURI("gates", lu_scheme, uri)
 }
 
 func DefaultGatesCatalogOptions() (*CatalogOptions, error) {

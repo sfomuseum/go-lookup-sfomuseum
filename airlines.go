@@ -9,7 +9,6 @@ import (
 	"io"
 	"io/ioutil"
 	_ "log"
-	"net/url"
 )
 
 // airlines://git?uri=
@@ -30,16 +29,7 @@ func NewAirlinesBlobURI(uri string) string {
 }
 
 func NewAirlinesURI(lu_scheme string, uri string) string {
-
-	u := url.URL{}
-	u.Scheme = "airlines"
-	u.Host = lu_scheme
-
-	p := url.Values{}
-	p.Set("uri", uri)
-
-	u.RawQuery = p.Encode()
-	return u.String()
+	return NewLookupURI("airlines", lu_scheme, uri)
 }
 
 func DefaultAirlinesCatalogOptions() (*CatalogOptions, error) {

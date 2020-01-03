@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/sfomuseum/go-lookup-sfomuseum"
-	_ "gocloud.dev/blob/fileblob"
 	"log"
 )
 
