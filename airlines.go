@@ -105,7 +105,7 @@ func AppendAirlineFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser)
 
 	for _, c := range codes {
 
-		fmt.Printf("APPEND '%s' : '%d'\n", c, id)
+		// fmt.Printf("APPEND '%s' : '%d'\n", c, id)
 
 		has_id, exists := lu.LoadOrStore(c, id)
 
