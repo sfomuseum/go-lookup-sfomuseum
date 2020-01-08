@@ -41,7 +41,7 @@ func DefaultAirlinesCatalogOptions() (*CatalogOptions, error) {
 	}
 
 	opts.AppendFuncs = append(opts.AppendFuncs, AppendAirlineFunc)
-	opts.AppendFuncs = append(opts.AppendFuncs, AppendAirlineCodesFunc)	
+	opts.AppendFuncs = append(opts.AppendFuncs, AppendAirlineCodesFunc)
 	return opts, nil
 }
 
@@ -154,18 +154,18 @@ func AppendAirlineCodesFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCl
 
 	iata_rsp := gjson.GetBytes(body, "properties.wof:concordances.iata:code")
 
-	if !iata_rsp.Exists(){
-		return nil
-	}
-	
-	icao_rsp := gjson.GetBytes(body, "properties.wof:concordances.icao:code")	
-
-	if !icao_rsp.Exists(){
+	if !iata_rsp.Exists() {
 		return nil
 	}
 
-	iata_code := iata_rsp.String()	// AC
-	icao_code := icao_rsp.String()	// ACA
+	icao_rsp := gjson.GetBytes(body, "properties.wof:concordances.icao:code")
+
+	if !icao_rsp.Exists() {
+		return nil
+	}
+
+	iata_code := iata_rsp.String() // AC
+	icao_code := icao_rsp.String() // ACA
 
 	iata_key := fmt.Sprintf("iata:%s", iata_code)
 
