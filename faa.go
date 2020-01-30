@@ -31,7 +31,7 @@ func NewFAABlobURI(uri string) string {
 }
 
 func NewFAAURI(lu_scheme string, uri string) string {
-	return NewLookupURI("FAA", lu_scheme, uri)
+	return NewLookupURI("faa", lu_scheme, uri)
 }
 
 func DefaultFAACatalogOptions() (*CatalogOptions, error) {
