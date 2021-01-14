@@ -23,7 +23,7 @@ func TestAirportsGitLookup(t *testing.T) {
 	c, err := NewCatalog(ctx, uri)
 
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("Failed to create new catalog for '%s', %v", uri, err)
 	}
 
 	for airport_name, expected_id := range tests {

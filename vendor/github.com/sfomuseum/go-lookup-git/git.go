@@ -5,29 +5,52 @@ import (
 	"context"
 	"github.com/sfomuseum/go-lookup"
 	gogit "gopkg.in/src-d/go-git.v4"
+	"gopkg.in/src-d/go-git.v4/plumbing"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 	"gopkg.in/src-d/go-git.v4/storage/memory"
 	"io/ioutil"
 	"log"
+	"net/url"
 )
+
+const DEFAULT_BRANCH string = "main"
 
 type GitLookerUpper struct {
 	lookup.LookerUpper
 	uri string
-	ref string
+	ref plumbing.ReferenceName
 }
 
 func NewGitLookerUpper(ctx context.Context) lookup.LookerUpper {
 
+	ref := plumbing.NewBranchReferenceName(DEFAULT_BRANCH)
+
 	l := &GitLookerUpper{
-		ref: "refs/remotes/origin/master",
+		ref: ref,
 	}
 
 	return l
 }
 
 func (l *GitLookerUpper) Open(ctx context.Context, uri string) error {
+
+	u, err := url.Parse(uri)
+
+	if err != nil {
+		return err
+	}
+
+	q := u.Query()
+
+	branch := q.Get("branch")
+
+	if branch != "" {
+		ref := plumbing.NewBranchReferenceName(branch)
+		l.ref = ref
+	}
+
 	l.uri = uri
+
 	return nil
 }
 
@@ -42,10 +65,7 @@ func (l *GitLookerUpper) Append(ctx context.Context, lu lookup.Catalog, append_f
 		return err
 	}
 
-	// please fix me...
-	// ./git.go:45:27: cannot use l.ref (type string) as type plumbing.ReferenceName in argument to r.Reference
-
-	ref, err := r.Reference("refs/remotes/origin/master", true)
+	ref, err := r.Reference(l.ref, true)
 
 	if err != nil {
 		return err
