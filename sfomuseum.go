@@ -73,7 +73,7 @@ func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
 	case "airports":
 		opts, opts_err = DefaultAirportsCatalogOptions()
 	case "faa":
-		opts, opts_err = DefaultFAACatalogOptions()		
+		opts, opts_err = DefaultFAACatalogOptions()
 	case "flights":
 		opts, opts_err = DefaultFlightsCatalogOptions()
 	case "gates":
