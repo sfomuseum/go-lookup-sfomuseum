@@ -21,37 +21,40 @@ type GitLookerUpper struct {
 	ref plumbing.ReferenceName
 }
 
-func NewGitLookerUpper(ctx context.Context) lookup.LookerUpper {
+func init() {
 
-	ref := plumbing.NewBranchReferenceName(DEFAULT_BRANCH)
+	ctx := context.Background()
+	err := lookup.RegisterLookerUpper(ctx, "git", NewGitLookerUpper)
 
-	l := &GitLookerUpper{
-		ref: ref,
+	if err != nil {
+		panic(err)
 	}
-
-	return l
 }
 
-func (l *GitLookerUpper) Open(ctx context.Context, uri string) error {
+func NewGitLookerUpper(ctx context.Context, uri string) (lookup.LookerUpper, error) {
 
 	u, err := url.Parse(uri)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
+
+	ref := plumbing.NewBranchReferenceName(DEFAULT_BRANCH)
 
 	q := u.Query()
 
 	branch := q.Get("branch")
 
 	if branch != "" {
-		ref := plumbing.NewBranchReferenceName(branch)
-		l.ref = ref
+		ref = plumbing.NewBranchReferenceName(branch)
 	}
 
-	l.uri = uri
+	l := &GitLookerUpper{
+		uri: uri,
+		ref: ref,
+	}
 
-	return nil
+	return l, nil
 }
 
 func (l *GitLookerUpper) Append(ctx context.Context, lu lookup.Catalog, append_funcs ...lookup.AppendLookupFunc) error {
