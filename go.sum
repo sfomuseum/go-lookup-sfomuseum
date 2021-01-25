@@ -287,6 +287,8 @@ github.com/sfomuseum/go-lookup-git v0.0.2 h1:l/qY64Mzy6pG1jq1+IkEp83cuoNHlPs4jti
 github.com/sfomuseum/go-lookup-git v0.0.2/go.mod h1:UHUpMd4vZZuI77eForJk3O3aRf2ztLqLqk8Y8WlsS4U=
 github.com/sfomuseum/go-lookup-git v0.0.3 h1:nnfy6exaJ9W4nLFK2O6YGvrC04L+NUPM2y2Eb6V7TY0=
 github.com/sfomuseum/go-lookup-git v0.0.3/go.mod h1:vnzhuHwwPDJRAoINkHUwKsU5vt2X6nj808/hSV3bO9s=
+github.com/sfomuseum/go-lookup-git v0.0.4 h1:BWnXj4g7dlN1fGyfSMQyz8aG5gKYphUAQgUQpAFYY9k=
+github.com/sfomuseum/go-lookup-git v0.0.4/go.mod h1:vnzhuHwwPDJRAoINkHUwKsU5vt2X6nj808/hSV3bO9s=
 github.com/src-d/gcfg v1.4.0 h1:xXbNR5AlLSA315x2UO+fTSSAXCDf+Ar38/6oyGbDKQ4=
 github.com/src-d/gcfg v1.4.0/go.mod h1:p/UMsR43ujA89BJY9duynAwIpvqEujIH/jFlfL7jWoI=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

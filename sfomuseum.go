@@ -11,6 +11,7 @@ import (
 	"github.com/sfomuseum/go-lookup"
 	_ "github.com/sfomuseum/go-lookup-blob"
 	_ "github.com/sfomuseum/go-lookup-git"
+	_ "github.com/sfomuseum/go-lookup/catalog"
 	"github.com/tidwall/pretty"
 	"net/url"
 )

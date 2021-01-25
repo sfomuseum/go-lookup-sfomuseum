@@ -27,9 +27,10 @@ github.com/mitchellh/go-homedir
 github.com/sergi/go-diff/diffmatchpatch
 # github.com/sfomuseum/go-lookup v0.0.1
 github.com/sfomuseum/go-lookup
+github.com/sfomuseum/go-lookup/catalog
 # github.com/sfomuseum/go-lookup-blob v0.0.1
 github.com/sfomuseum/go-lookup-blob
-# github.com/sfomuseum/go-lookup-git v0.0.3
+# github.com/sfomuseum/go-lookup-git v0.0.4
 github.com/sfomuseum/go-lookup-git
 # github.com/src-d/gcfg v1.4.0
 github.com/src-d/gcfg
