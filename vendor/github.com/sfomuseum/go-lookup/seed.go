@@ -2,6 +2,7 @@ package lookup
 
 import (
 	"context"
+	"log"
 )
 
 func SeedCatalog(ctx context.Context, c Catalog, looker_uppers []LookerUpper, append_funcs []AppendLookupFunc) error {
@@ -18,6 +19,7 @@ func SeedCatalog(ctx context.Context, c Catalog, looker_uppers []LookerUpper, ap
 
 		go func(l LookerUpper) {
 
+			log.Printf("APPEND %v -> %T\n", c, l)
 			err := l.Append(ctx, c, append_funcs...)
 
 			if err != nil {

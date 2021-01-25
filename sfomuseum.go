@@ -54,7 +54,6 @@ func NewLookupURI(scheme string, lu_scheme string, uri string) string {
 
 	u.RawQuery = p.Encode()
 	return u.String()
-
 }
 
 func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {

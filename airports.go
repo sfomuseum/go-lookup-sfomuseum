@@ -102,7 +102,7 @@ func AppendAirportFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser)
 
 	for _, c := range codes {
 
-		// fmt.Printf("APPEND '%s' : '%d' is current: %d\n", gt, id, c_rsp.Int())
+		fmt.Printf("APPEND '%s' : '%d'\n", c, id)
 
 		has_id, exists := lu.LoadOrStore(c, id)
 

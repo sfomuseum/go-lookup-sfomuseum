@@ -95,6 +95,8 @@ func (l *GitLookerUpper) Append(ctx context.Context, lu lookup.Catalog, append_f
 		return err
 	}
 
+	log.Println("FILE", files)
+	
 	err = files.ForEach(func(f *object.File) error {
 
 		fh, err := f.Reader()
