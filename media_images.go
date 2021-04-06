@@ -46,6 +46,12 @@ func AppendMediaImagesFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadClo
 		return err
 	}
 
+	deprecated_rsp := gjson.GetBytes(body, "properties.edtf:deprecated")
+
+	if deprecated_rsp.Exists() && deprecated_rsp.String() != "" {
+		return nil
+	}
+
 	id_rsp := gjson.GetBytes(body, "properties.wof:id")
 
 	if !id_rsp.Exists() {
