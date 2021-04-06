@@ -11,8 +11,6 @@ import (
 	_ "log"
 )
 
-const SFOMUSEUM_DATA_ARCHITECTURE string = "https://github.com/sfomuseum-data/sfomuseum-data-architecture.git"
-
 func DefaultGatesGitURI() string {
 	return NewGatesGitURI(SFOMUSEUM_DATA_ARCHITECTURE)
 }

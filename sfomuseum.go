@@ -16,6 +16,12 @@ import (
 	"net/url"
 )
 
+const SFOMUSEUM_DATA_MEDIA string = "https://github.com/sfomuseum-data/sfomuseum-data-media.git"
+const SFOMUSEUM_DATA_ARCHITECTURE string = "https://github.com/sfomuseum-data/sfomuseum-data-architecture.git"
+const SFOMUSEUM_DATA_WHOSONFIRST string = "https://github.com/sfomuseum-data/sfomuseum-data-whosonfirst.git"
+const SFOMUSEUM_DATA_ENTERPRISE string = "https://github.com/sfomuseum-data/sfomuseum-data-enterprise.git"
+const SFOMUSEUM_DATA_FLIGHTS string = "https://github.com/sfomuseum-data/sfomuseum-data-flights-%s.git"
+
 type CatalogOptions struct {
 	Catalog      lookup.Catalog
 	AppendFuncs  []lookup.AppendLookupFunc
@@ -78,6 +84,8 @@ func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
 		opts, opts_err = DefaultFlightsCatalogOptions()
 	case "gates":
 		opts, opts_err = DefaultGatesCatalogOptions()
+	case "images":
+		opts, opts_err = DefaultMediaImagesCatalogOptions()
 	default:
 		return nil, errors.New("Unsupported lookup")
 	}

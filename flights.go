@@ -11,8 +11,6 @@ import (
 	_ "log"
 )
 
-const SFOMUSEUM_DATA_FLIGHTS string = "https://github.com/sfomuseum-data/sfomuseum-data-flights-%s.git"
-
 // IMPORTANT: THIS DOES NOT SUPPORT MULTIPLE YYYYMM REPOS
 // IT SHOULD (maybe...) BUT IT TODAY IT DOES NOT
 // (20200108/thisisaaronland)

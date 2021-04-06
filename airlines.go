@@ -14,8 +14,6 @@ import (
 // airlines://git?uri=
 // airlines://blob?uri=
 
-const SFOMUSEUM_DATA_ENTERPRISE string = "https://github.com/sfomuseum-data/sfomuseum-data-enterprise.git"
-
 func DefaultAirlinesGitURI() string {
 	return NewAirlinesGitURI(SFOMUSEUM_DATA_ENTERPRISE)
 }

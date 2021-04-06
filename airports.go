@@ -11,8 +11,6 @@ import (
 	_ "log"
 )
 
-const SFOMUSEUM_DATA_WHOSONFIRST string = "https://github.com/sfomuseum-data/sfomuseum-data-whosonfirst.git"
-
 func DefaultAirportsGitURI() string {
 	return NewAirportsGitURI(SFOMUSEUM_DATA_WHOSONFIRST)
 }
