@@ -1,4 +1,4 @@
-package lookup
+package catalog
 
 import (
 	"context"

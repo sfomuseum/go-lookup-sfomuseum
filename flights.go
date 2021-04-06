@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/sfomuseum/go-lookup"
+	"github.com/sfomuseum/go-lookup/catalog"
 	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
@@ -29,7 +29,7 @@ func NewFlightsBlobURI(uri string) string {
 }
 
 func NewFlightsURI(lu_scheme string, uri string) string {
-	return NewLookupURI("flights", lu_scheme, uri)
+	return NewIteratorURI("flights", lu_scheme, uri)
 }
 
 func DefaultFlightsCatalogOptions() (*CatalogOptions, error) {
@@ -45,7 +45,7 @@ func DefaultFlightsCatalogOptions() (*CatalogOptions, error) {
 	return opts, nil
 }
 
-func AppendFlightFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser) error {
+func AppendFlightFunc(ctx context.Context, lu catalog.Catalog, fh io.ReadCloser) error {
 
 	body, err := ioutil.ReadAll(fh)
 

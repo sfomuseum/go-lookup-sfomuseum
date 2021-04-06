@@ -3,7 +3,7 @@ package sfomuseum
 import (
 	"context"
 	"fmt"
-	"github.com/sfomuseum/go-lookup"
+	"github.com/sfomuseum/go-lookup/catalog"
 	"github.com/tidwall/gjson"
 	"io"
 	_ "log"
@@ -22,7 +22,7 @@ func NewMediaImagesBlobURI(uri string) string {
 }
 
 func NewMediaImagesURI(lu_scheme string, uri string) string {
-	return NewLookupURI("images", lu_scheme, uri)
+	return NewIteratorURI("images", lu_scheme, uri)
 }
 
 func DefaultMediaImagesCatalogOptions() (*CatalogOptions, error) {
@@ -38,7 +38,7 @@ func DefaultMediaImagesCatalogOptions() (*CatalogOptions, error) {
 	return opts, nil
 }
 
-func AppendMediaImagesFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser) error {
+func AppendMediaImagesFunc(ctx context.Context, lu catalog.Catalog, fh io.ReadCloser) error {
 
 	body, err := io.ReadAll(fh)
 

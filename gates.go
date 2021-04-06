@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/sfomuseum/go-lookup"
+	"github.com/sfomuseum/go-lookup/catalog"
 	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
@@ -24,7 +24,7 @@ func NewGatesBlobURI(uri string) string {
 }
 
 func NewGatesURI(lu_scheme string, uri string) string {
-	return NewLookupURI("gates", lu_scheme, uri)
+	return NewIteratorURI("gates", lu_scheme, uri)
 }
 
 func DefaultGatesCatalogOptions() (*CatalogOptions, error) {
@@ -40,7 +40,7 @@ func DefaultGatesCatalogOptions() (*CatalogOptions, error) {
 	return opts, nil
 }
 
-func AppendGateFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser) error {
+func AppendGateFunc(ctx context.Context, lu catalog.Catalog, fh io.ReadCloser) error {
 
 	body, err := ioutil.ReadAll(fh)
 

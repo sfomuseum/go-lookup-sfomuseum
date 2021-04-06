@@ -55,6 +55,8 @@ github.com/sfomuseum/go-lookup v0.0.0-20200102203002-01124d8c499b h1:3GcR6TAXojk
 github.com/sfomuseum/go-lookup v0.0.0-20200102203002-01124d8c499b/go.mod h1:WRGkX/YTsyx9Qi8sknwJ6gLcz7VhynjKgUre1voih5c=
 github.com/sfomuseum/go-lookup v0.0.1 h1:vUP00Y0ikwX7qog3Lgg4SLxr4oZwIOPupsz/9tBwE8U=
 github.com/sfomuseum/go-lookup v0.0.1/go.mod h1:QiPNY/1pRqmkj4zB7M6U697gED+lvF8QWB00ojuXLOs=
+github.com/sfomuseum/go-lookup v0.0.2 h1:4tO7azCrFlXrw8Ao/AX+OIUmY+lViaEgL1KdZxR0dHc=
+github.com/sfomuseum/go-lookup v0.0.2/go.mod h1:QiPNY/1pRqmkj4zB7M6U697gED+lvF8QWB00ojuXLOs=
 github.com/sirupsen/logrus v1.4.1/go.mod h1:ni0Sbl8bgC9z8RoU9G6nDWqqs/fq4eDPysMBDgk/93Q=
 github.com/src-d/gcfg v1.4.0 h1:xXbNR5AlLSA315x2UO+fTSSAXCDf+Ar38/6oyGbDKQ4=
 github.com/src-d/gcfg v1.4.0/go.mod h1:p/UMsR43ujA89BJY9duynAwIpvqEujIH/jFlfL7jWoI=

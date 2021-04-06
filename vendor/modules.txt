@@ -84,14 +84,15 @@ github.com/kevinburke/ssh_config
 github.com/mitchellh/go-homedir
 # github.com/sergi/go-diff v1.1.0
 github.com/sergi/go-diff/diffmatchpatch
-# github.com/sfomuseum/go-lookup v0.0.1
+# github.com/sfomuseum/go-lookup v0.0.2
 ## explicit
 github.com/sfomuseum/go-lookup
 github.com/sfomuseum/go-lookup/catalog
-# github.com/sfomuseum/go-lookup-blob v0.0.1
+github.com/sfomuseum/go-lookup/iterator
+# github.com/sfomuseum/go-lookup-blob v0.0.3
 ## explicit
 github.com/sfomuseum/go-lookup-blob
-# github.com/sfomuseum/go-lookup-git v0.0.5
+# github.com/sfomuseum/go-lookup-git v0.0.6
 ## explicit
 github.com/sfomuseum/go-lookup-git
 # github.com/tidwall/gjson v1.7.4

@@ -4,14 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/sfomuseum/go-lookup"
+	"github.com/sfomuseum/go-lookup/catalog"
 	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
 	_ "log"
 )
-
-const SFOMUSEUM_DATA_FAA string = "https://github.com/sfomuseum-data/sfomuseum-data-faa-%s.git"
 
 // IMPORTANT: THIS DOES NOT SUPPORT MULTIPLE YYYYMM REPOS
 // IT SHOULD (maybe...) BUT IT TODAY IT DOES NOT
@@ -31,7 +29,7 @@ func NewFAABlobURI(uri string) string {
 }
 
 func NewFAAURI(lu_scheme string, uri string) string {
-	return NewLookupURI("faa", lu_scheme, uri)
+	return NewIteratorURI("faa", lu_scheme, uri)
 }
 
 func DefaultFAACatalogOptions() (*CatalogOptions, error) {
@@ -47,7 +45,7 @@ func DefaultFAACatalogOptions() (*CatalogOptions, error) {
 	return opts, nil
 }
 
-func AppendFAAFunc(ctx context.Context, lu lookup.Catalog, fh io.ReadCloser) error {
+func AppendFAAFunc(ctx context.Context, lu catalog.Catalog, fh io.ReadCloser) error {
 
 	body, err := ioutil.ReadAll(fh)
 

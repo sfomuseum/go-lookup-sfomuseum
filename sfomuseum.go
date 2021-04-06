@@ -11,7 +11,8 @@ import (
 	"github.com/sfomuseum/go-lookup"
 	_ "github.com/sfomuseum/go-lookup-blob"
 	_ "github.com/sfomuseum/go-lookup-git"
-	_ "github.com/sfomuseum/go-lookup/catalog"
+	"github.com/sfomuseum/go-lookup/catalog"
+	"github.com/sfomuseum/go-lookup/iterator"
 	"github.com/tidwall/pretty"
 	"net/url"
 )
@@ -21,35 +22,36 @@ const SFOMUSEUM_DATA_ARCHITECTURE string = "https://github.com/sfomuseum-data/sf
 const SFOMUSEUM_DATA_WHOSONFIRST string = "https://github.com/sfomuseum-data/sfomuseum-data-whosonfirst.git"
 const SFOMUSEUM_DATA_ENTERPRISE string = "https://github.com/sfomuseum-data/sfomuseum-data-enterprise.git"
 const SFOMUSEUM_DATA_FLIGHTS string = "https://github.com/sfomuseum-data/sfomuseum-data-flights-%s.git"
+const SFOMUSEUM_DATA_FAA string = "https://github.com/sfomuseum-data/sfomuseum-data-faa-%s.git"
 
 type CatalogOptions struct {
-	Catalog      lookup.Catalog
-	AppendFuncs  []lookup.AppendLookupFunc
-	LookerUppers []lookup.LookerUpper
+	Catalog     catalog.Catalog
+	AppendFuncs []iterator.AppendLookupFunc
+	Iterators   []iterator.Iterator
 }
 
 func DefaultCatalogOptions() (*CatalogOptions, error) {
 
 	ctx := context.Background()
-	c, err := lookup.NewCatalog(ctx, "syncmap://")
+	c, err := catalog.NewCatalog(ctx, "syncmap://")
 
 	if err != nil {
 		return nil, err
 	}
 
-	funcs := make([]lookup.AppendLookupFunc, 0)
-	lookers := make([]lookup.LookerUpper, 0)
+	funcs := make([]iterator.AppendLookupFunc, 0)
+	lookers := make([]iterator.Iterator, 0)
 
 	opts := &CatalogOptions{
-		Catalog:      c,
-		AppendFuncs:  funcs,
-		LookerUppers: lookers,
+		Catalog:     c,
+		AppendFuncs: funcs,
+		Iterators:   lookers,
 	}
 
 	return opts, nil
 }
 
-func NewLookupURI(scheme string, lu_scheme string, uri string) string {
+func NewIteratorURI(scheme string, lu_scheme string, uri string) string {
 
 	u := url.URL{}
 	u.Scheme = scheme
@@ -62,7 +64,7 @@ func NewLookupURI(scheme string, lu_scheme string, uri string) string {
 	return u.String()
 }
 
-func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
+func NewCatalog(ctx context.Context, uri string) (catalog.Catalog, error) {
 
 	u, err := url.Parse(uri)
 
@@ -87,7 +89,7 @@ func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
 	case "images":
 		opts, opts_err = DefaultMediaImagesCatalogOptions()
 	default:
-		return nil, errors.New("Unsupported lookup")
+		return nil, errors.New("Unsupported iterator")
 	}
 
 	if opts_err != nil {
@@ -97,19 +99,19 @@ func NewCatalog(ctx context.Context, uri string) (lookup.Catalog, error) {
 	q := u.Query()
 	lu_uri := q.Get("uri")
 
-	lu, err := lookup.NewLookerUpper(ctx, lu_uri)
+	lu, err := iterator.NewIterator(ctx, lu_uri)
 
 	if err != nil {
 		return nil, err
 	}
 
-	opts.LookerUppers = append(opts.LookerUppers, lu)
+	opts.Iterators = append(opts.Iterators, lu)
 	return NewCatalogWithOptions(ctx, opts)
 }
 
-func NewCatalogWithOptions(ctx context.Context, opts *CatalogOptions) (lookup.Catalog, error) {
+func NewCatalogWithOptions(ctx context.Context, opts *CatalogOptions) (catalog.Catalog, error) {
 
-	err := lookup.SeedCatalog(ctx, opts.Catalog, opts.LookerUppers, opts.AppendFuncs)
+	err := lookup.SeedCatalog(ctx, opts.Catalog, opts.Iterators, opts.AppendFuncs)
 
 	if err != nil {
 		return nil, err
@@ -118,7 +120,7 @@ func NewCatalogWithOptions(ctx context.Context, opts *CatalogOptions) (lookup.Ca
 	return opts.Catalog, nil
 }
 
-func MarshalCatalog(c lookup.Catalog) ([]byte, error) {
+func MarshalCatalog(c catalog.Catalog) ([]byte, error) {
 
 	lookup := make(map[string]interface{})
 
