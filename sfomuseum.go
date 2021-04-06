@@ -17,6 +17,8 @@ import (
 	"net/url"
 )
 
+const SFOMUSEUM_DATA_PUBLICART string = "https://github.com/sfomuseum-data/sfomuseum-data-publicart.git"
+const SFOMUSEUM_DATA_EXHIBITION string = "https://github.com/sfomuseum-data/sfomuseum-data-exhibition.git"
 const SFOMUSEUM_DATA_MEDIA string = "https://github.com/sfomuseum-data/sfomuseum-data-media.git"
 const SFOMUSEUM_DATA_ARCHITECTURE string = "https://github.com/sfomuseum-data/sfomuseum-data-architecture.git"
 const SFOMUSEUM_DATA_WHOSONFIRST string = "https://github.com/sfomuseum-data/sfomuseum-data-whosonfirst.git"
@@ -86,6 +88,10 @@ func NewCatalog(ctx context.Context, uri string) (catalog.Catalog, error) {
 		opts, opts_err = DefaultFlightsCatalogOptions()
 	case "gates":
 		opts, opts_err = DefaultGatesCatalogOptions()
+	case "publicart":
+		opts, opts_err = DefaultPublicArtCatalogOptions()
+	case "exhibitions":
+		opts, opts_err = DefaultExhibitionsCatalogOptions()
 	case "images":
 		opts, opts_err = DefaultMediaImagesCatalogOptions()
 	default:
